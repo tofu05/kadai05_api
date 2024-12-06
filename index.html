@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docu</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body> 
+    <div class="a">   
+        <h1>ギャル語変換アプリ</h1>
+        <textarea id="main" class="tx"></textarea>
+        <button id="henkan" class="b1">変才奐❤️</button>
+        <textarea name="output" id="output" class="tx"></textarea>
+        <button id="yomiage" class="b2">読み上げ</button>
+        <audio id="audio" controls class="au"></audio>
+    </div>
+
+    <script>
+        document.getElementById('henkan').addEventListener('click', async () => {
+            const inputText = document.getElementById('main').value;
+            const apiKey = ""; // GeminiのAPIキーを入力
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            const prompt = "次の文章を日本語かつギャル語に変換して出力して。";
+            const inputText_prompt = prompt + inputText
+
+            // 入力が空の場合、エラーを表示
+            if (!inputText) {
+                document.getElementById('output').value = "テキストを入力してください";
+                return;
+            }
+
+            const requestData = {
+                contents: [{
+                    parts: [{ text: inputText_prompt }]
+                }]
+            };
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(requestData),
+            });
+
+            const data = await response.json();
+            const textOutput = data.candidates?.[0]?.content?.parts?.[0]?.text || "えらー";
+            document.getElementById('output').value = textOutput;
+        });
+
+        document.getElementById('yomiage').addEventListener('click', async () => {
+                const outputText = document.getElementById('output').value;
+                const apiKey = ""; // OpenAIのAPIキーを入力
+                const ttsUrl = `https://api.openai.com/v1/audio/speech`;
+
+                if (!outputText) {
+                    alert("出力テキストがありません。");
+                    return;
+                }
+
+                const ttsRequestData = {
+                    model: "tts-1",
+                    input: outputText,
+                    voice: "nova",
+                    speed: 1.25
+                };
+
+                
+                const response = await fetch(ttsUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(ttsRequestData),
+                });
+
+                const audioBlob = await response.blob();
+                const audioUrl = URL.createObjectURL(audioBlob);
+
+                const audioElement = document.getElementById('audio');
+                audioElement.src = audioUrl;
+                audioElement.style.display = 'block';
+                audioElement.play();
+            });
+
+
+
+    </script>
+
+</body>
+</html>

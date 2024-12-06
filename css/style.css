@@ -1,0 +1,70 @@
+body {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #ff66cc;
+    font-size: 16px;
+}
+
+h1{
+    color: white;
+}
+
+.a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* b1, b2にデザインを適用 */
+.b1,
+.b2 {
+    background: #eee;
+    border-radius: 50px;
+    position: relative;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 0 auto;
+    max-width: 260px;
+    padding: 10px 25px;
+    color: #313131;
+    transition: 0.3s ease-in-out;
+    font-weight: 500;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    width: 200px;
+}
+.b1:hover,
+.b2:hover {
+    background: #313131;
+    color: #FFF;
+}
+.b1:after,
+.b2:after {
+    width: 5px;
+    height: 5px;
+    border-top: 3px solid #313131;
+    border-right: 3px solid #313131;
+    transform: rotate(45deg) translateY(-50%);
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    border-radius: 1px;
+    transition: 0.3s ease-in-out;
+}
+.b1:hover:after,
+.b2:hover:after {
+    border-color: #FFF;
+}
+
+.au {
+    margin: 5px;
+}
+
+.tx {
+    width: 600px;
+    height: 300px;
+    margin: 5px;
+
+}
